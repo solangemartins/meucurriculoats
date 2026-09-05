@@ -415,8 +415,7 @@ export function ResumeEditor({
               <Download className="size-4" /> Exportar assim mesmo
             </AlertDialogAction>
           </AlertDialogFooter>
-        </AlertDialogFooter>
-      </AlertDialogContent>
+        </AlertDialogContent>
       </AlertDialog>
     </div>
   );
