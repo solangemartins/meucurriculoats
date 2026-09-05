@@ -93,6 +93,9 @@ export function ResumeEditor({
   const [salvandoManual, setSalvandoManual] = useState(false);
   const [erroConexao, setErroConexao] = useState(false);
   const [abaMobile, setAbaMobile] = useState("editar");
+  const [analiseAberta, setAnaliseAberta] = useState(false);
+
+
 
   const dataRef = useRef(data);
   dataRef.current = data;
