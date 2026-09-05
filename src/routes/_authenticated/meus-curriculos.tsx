@@ -42,7 +42,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { listAnalyses } from "@/lib/analysis/api";
+import { scoreBand } from "@/lib/analysis/types";
 import { useAuth } from "@/lib/auth-context";
+
 import {
   deleteResume,
   duplicateResume,
