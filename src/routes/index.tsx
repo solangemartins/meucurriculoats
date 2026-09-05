@@ -88,9 +88,17 @@ const PASSOS = [
   },
   {
     numero: "3",
-    titulo: "Entre ou crie uma conta para salvar ou exportar",
-    texto: "A conta pede apenas nome, e-mail e senha. Nada do que você escreveu é perdido.",
+    titulo: "Analise seu currículo para uma vaga",
+    texto:
+      "Cole a descrição da vaga e veja a compatibilidade de 0 a 100, com pontos fortes, lacunas e sugestões — antes de qualquer cadastro.",
   },
+  {
+    numero: "4",
+    titulo: "Entre ou crie uma conta para salvar ou exportar",
+    texto:
+      "A conta pede apenas nome, e-mail e senha, guarda seus currículos e o histórico das análises. Nada do que você escreveu é perdido.",
+  },
+
 ];
 
 function ResumeMock() {
