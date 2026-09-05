@@ -187,6 +187,7 @@ function MeusCurriculos() {
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.map((row) => {
             const modelo = TEMPLATES.find((t) => t.id === row.template)?.nome ?? "Clássico";
+            const ultima = analises?.find((a) => a.resume_id === row.id);
             return (
               <li key={row.id}>
                 <Card className="flex h-full flex-col">
@@ -201,6 +202,15 @@ function MeusCurriculos() {
                     <p className="text-xs text-muted-foreground">
                       Atualizado em {dataBr(row.updated_at)}
                     </p>
+                    {ultima ? (
+                      <p className="text-xs text-muted-foreground">
+                        Última análise: {ultima.overall_score}/100 (
+                        {scoreBand(ultima.overall_score).rotulo}) para “{ultima.job_title}” em{" "}
+                        {dataBr(ultima.created_at)}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">Nenhuma análise de vaga salva ainda.</p>
+                    )}
                   </CardContent>
                   <CardFooter className="flex flex-wrap gap-2">
                     <Button
@@ -208,6 +218,12 @@ function MeusCurriculos() {
                       onClick={() => navigate({ to: "/editar-curriculo/$id", params: { id: row.id } })}
                     >
                       <Pencil className="size-4" /> Editar
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setAnalisar(row)}>
+                      <ScanSearch className="size-4" /> Analisar vaga
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setHistorico(row)}>
+                      <History className="size-4" /> Histórico
                     </Button>
                     <Button
                       size="sm"
@@ -227,6 +243,7 @@ function MeusCurriculos() {
                     >
                       <Copy className="size-4" /> Duplicar
                     </Button>
+
                     <Button
                       size="sm"
                       variant="ghost"
