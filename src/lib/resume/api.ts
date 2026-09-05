@@ -18,7 +18,7 @@ function payload(data: ResumeData) {
     title: data.title.trim() || "Meu currículo",
     target_role: data.personal.headline.trim() || data.objective.desiredRole.trim(),
     template: data.template,
-    resume_data: data as unknown as Record<string, unknown>,
+    resume_data: JSON.parse(JSON.stringify(data)) as Json,
   };
 }
 
