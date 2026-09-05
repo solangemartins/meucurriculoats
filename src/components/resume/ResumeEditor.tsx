@@ -328,7 +328,7 @@ export function ResumeEditor({
         </p>
       ) : null}
 
-      {/* Celular: alterna entre editar e visualizar */}
+      {/* Celular: alterna entre editar e visualizar. No computador os dois aparecem juntos. */}
       <div className="lg:hidden">
         <Tabs value={abaMobile} onValueChange={setAbaMobile}>
           <TabsList className="grid w-full grid-cols-2">
@@ -339,22 +339,20 @@ export function ResumeEditor({
               <Eye className="size-4" aria-hidden="true" /> Visualizar
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="editar" className="pt-4">
-            {formulario}
-          </TabsContent>
-          <TabsContent value="visualizar" className="pt-4">
-            {previa}
-          </TabsContent>
         </Tabs>
       </div>
 
-      {/* Computador: formulário + pré-visualização fixa */}
-      <div className="hidden gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-        <div>{formulario}</div>
-        <div className="lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+        <div className={abaMobile === "editar" ? "" : "hidden lg:block"}>{formulario}</div>
+        <div
+          className={`lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1 ${
+            abaMobile === "visualizar" ? "" : "hidden lg:block"
+          }`}
+        >
           {previa}
         </div>
       </div>
+
 
       <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
         <Button variant="ghost" onClick={() => navigate({ to: "/visualizar-curriculo" })}>
