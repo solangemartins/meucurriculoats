@@ -1,9 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
-import { CloudOff, Download, Eye, FileDown, Loader2, PencilLine, Save } from "lucide-react";
+import { CloudOff, Download, Eye, FileDown, Loader2, PencilLine, Save, ScanSearch } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
+import type { AnalysisRewrite } from "@/lib/analysis/types";
 import { AuthDialog } from "@/components/auth/AuthDialog";
+
 import {
   AdditionalSection,
   CertificationsSection,
