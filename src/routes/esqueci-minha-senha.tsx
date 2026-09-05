@@ -55,6 +55,7 @@ function EsqueciSenha() {
   return (
     <PageShell>
       <div className="mx-auto max-w-md">
+        <h1 className="sr-only">Currículo ATS</h1>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Esqueci minha senha</CardTitle>
