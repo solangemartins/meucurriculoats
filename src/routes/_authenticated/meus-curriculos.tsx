@@ -319,6 +319,35 @@ function MeusCurriculos() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {analisar ? (
+        <JobAnalysisDialog
+          open
+          onOpenChange={(aberto) => {
+            if (!aberto) {
+              setAnalisar(null);
+              void queryClient.invalidateQueries({ queryKey: ["analises"] });
+            }
+          }}
+          data={rowToResume(analisar)}
+          resumeId={analisar.id}
+          initial={{ job: { jobTitle: "", company: "", jobDescription: "" }, result: null }}
+        />
+      ) : null}
+
+      {historico ? (
+        <AnalysisHistoryDialog
+          open
+          onOpenChange={(aberto) => {
+            if (!aberto) {
+              setHistorico(null);
+              void queryClient.invalidateQueries({ queryKey: ["analises"] });
+            }
+          }}
+          resumeId={historico.id}
+          resumeTitle={historico.title}
+        />
+      ) : null}
     </PageShell>
+
   );
 }
