@@ -37,6 +37,12 @@ export const Route = createFileRoute("/")({
 
 const BENEFICIOS = [
   {
+    icon: ScanSearch,
+    titulo: "Análise de compatibilidade com a vaga",
+    texto:
+      "Cole a descrição de uma vaga e receba uma nota de 0 a 100, com pontos fortes, lacunas e sugestões. Sem cadastro.",
+  },
+  {
     icon: ListChecks,
     titulo: "Estrutura compatível com ATS",
     texto: "Uma coluna, títulos padronizados e texto real: o formato que os sistemas leem sem erro.",
@@ -46,6 +52,7 @@ const BENEFICIOS = [
     titulo: "Edição fácil",
     texto: "Seções organizadas, campos claros e dicas curtas ao lado de cada informação.",
   },
+
   {
     icon: Eye,
     titulo: "Visualização em tempo real",
