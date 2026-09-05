@@ -84,6 +84,16 @@ function VisualizarCurriculo() {
           <ResumePreview data={data} />
         </div>
       )}
+
+      {data && data !== "vazio" ? (
+        <JobAnalysisDialog
+          open={analiseAberta}
+          onOpenChange={setAnaliseAberta}
+          data={data}
+          resumeId={resumeId}
+        />
+      ) : null}
     </PageShell>
+
   );
 }
