@@ -186,7 +186,7 @@ function Home() {
         <section className="surface-soft">
           <div className="mx-auto max-w-6xl px-4 py-14">
             <h2 className="text-2xl font-bold sm:text-3xl">Como funciona</h2>
-            <ol className="mt-8 grid gap-4 md:grid-cols-3">
+            <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {PASSOS.map((passo) => (
                 <li key={passo.numero} className="card-elevated p-5">
                   <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
