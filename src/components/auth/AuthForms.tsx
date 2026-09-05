@@ -92,6 +92,8 @@ function mensagemErro(raw: string) {
   if (texto.includes("invalid login")) return "E-mail ou senha incorretos.";
   if (texto.includes("already registered") || texto.includes("already been registered"))
     return "Este e-mail já possui uma conta. Use a aba “Entrar”.";
+  if (texto.includes("pwned") || texto.includes("weak") || texto.includes("compromis"))
+    return "Essa senha aparece em vazamentos conhecidos. Escolha uma senha diferente.";
   if (texto.includes("password")) return "Senha inválida. Use pelo menos 8 caracteres.";
   if (texto.includes("network") || texto.includes("fetch"))
     return "Sem conexão agora. Tente novamente em instantes.";
