@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CriarCurriculoRouteImport } from './routes/criar-curriculo'
+import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CriarCurriculoRoute = CriarCurriculoRouteImport.update({
+  id: '/criar-curriculo',
+  path: '/criar-curriculo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
+  id: '/visualizar-curriculo',
+  path: '/visualizar-curriculo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/criar-curriculo' | '/visualizar-curriculo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/criar-curriculo' | '/visualizar-curriculo'
+  id: '__root__' | '/' | '/criar-curriculo' | '/visualizar-curriculo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CriarCurriculoRoute: typeof CriarCurriculoRoute
+  VisualizarCurriculoRoute: typeof VisualizarCurriculoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/criar-curriculo': {
+      id: '/criar-curriculo'
+      path: '/criar-curriculo'
+      fullPath: '/criar-curriculo'
+      preLoaderRoute: typeof CriarCurriculoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visualizar-curriculo': {
+      id: '/visualizar-curriculo'
+      path: '/visualizar-curriculo'
+      fullPath: '/visualizar-curriculo'
+      preLoaderRoute: typeof VisualizarCurriculoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CriarCurriculoRoute: CriarCurriculoRoute,
+  VisualizarCurriculoRoute: VisualizarCurriculoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
