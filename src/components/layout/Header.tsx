@@ -39,8 +39,9 @@ export function Header() {
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold">
           <FileText className="size-5 text-primary" aria-hidden="true" />
           <span>
-            Currículo <span className="text-primary">ATS</span>
+            Meu Currículo <span className="text-primary">ATS</span>
           </span>
+
         </Link>
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
