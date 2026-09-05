@@ -408,6 +408,16 @@ export function ResumeEditor({
         ) : null}
       </div>
 
+      <JobAnalysisDialog
+        open={analiseAberta}
+        onOpenChange={setAnaliseAberta}
+        data={data}
+        resumeId={resumeId}
+        onApplyRewrite={aplicarReescrita}
+      />
+
+
+
       <AuthDialog
         open={authDialog !== null}
         action={authDialog ?? "salvar"}
