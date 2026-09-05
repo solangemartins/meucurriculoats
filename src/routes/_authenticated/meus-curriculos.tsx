@@ -1,10 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Copy, FileDown, FilePlus2, FileText, Loader2, Pencil, Trash2 } from "lucide-react";
+import {
+  Copy,
+  FileDown,
+  FilePlus2,
+  FileText,
+  History,
+  Loader2,
+  Pencil,
+  ScanSearch,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { AnalysisHistoryDialog } from "@/components/analysis/AnalysisHistoryDialog";
+import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
 import { PageShell } from "@/components/layout/PageShell";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
