@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CriarContaRouteImport } from './routes/criar-conta'
 import { Route as CriarCurriculoRouteImport } from './routes/criar-curriculo'
 import { Route as EntrarRouteImport } from './routes/entrar'
@@ -18,10 +19,16 @@ import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
+import { Route as AuthenticatedMeusCurriculosRouteImport } from './routes/_authenticated/meus-curriculos'
+import { Route as AuthenticatedEditarCurriculoIdRouteImport } from './routes/_authenticated/editar-curriculo.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CriarContaRoute = CriarContaRouteImport.update({
@@ -64,6 +71,18 @@ const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
   path: '/visualizar-curriculo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMeusCurriculosRoute =
+  AuthenticatedMeusCurriculosRouteImport.update({
+    id: '/meus-curriculos',
+    path: '/meus-curriculos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEditarCurriculoIdRoute =
+  AuthenticatedEditarCurriculoIdRouteImport.update({
+    id: '/editar-curriculo/$id',
+    path: '/editar-curriculo/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,10 +107,13 @@ export interface FileRoutesByTo {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/criar-conta': typeof CriarContaRoute
   '/criar-curriculo': typeof CriarCurriculoRoute
   '/entrar': typeof EntrarRoute
@@ -98,6 +122,8 @@ export interface FileRoutesById {
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/_authenticated/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/_authenticated/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +137,8 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/termos-de-uso'
     | '/visualizar-curriculo'
+    | '/meus-curriculos'
+    | '/editar-curriculo/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,9 +150,12 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/termos-de-uso'
     | '/visualizar-curriculo'
+    | '/meus-curriculos'
+    | '/editar-curriculo/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/criar-conta'
     | '/criar-curriculo'
     | '/entrar'
@@ -133,10 +164,13 @@ export interface FileRouteTypes {
     | '/redefinir-senha'
     | '/termos-de-uso'
     | '/visualizar-curriculo'
+    | '/_authenticated/meus-curriculos'
+    | '/_authenticated/editar-curriculo/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CriarContaRoute: typeof CriarContaRoute
   CriarCurriculoRoute: typeof CriarCurriculoRoute
   EntrarRoute: typeof EntrarRoute
@@ -154,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/criar-conta': {
@@ -212,11 +253,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VisualizarCurriculoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/meus-curriculos': {
+      id: '/_authenticated/meus-curriculos'
+      path: '/meus-curriculos'
+      fullPath: '/meus-curriculos'
+      preLoaderRoute: typeof AuthenticatedMeusCurriculosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/editar-curriculo/$id': {
+      id: '/_authenticated/editar-curriculo/$id'
+      path: '/editar-curriculo/$id'
+      fullPath: '/editar-curriculo/$id'
+      preLoaderRoute: typeof AuthenticatedEditarCurriculoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMeusCurriculosRoute: typeof AuthenticatedMeusCurriculosRoute
+  AuthenticatedEditarCurriculoIdRoute: typeof AuthenticatedEditarCurriculoIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMeusCurriculosRoute: AuthenticatedMeusCurriculosRoute,
+  AuthenticatedEditarCurriculoIdRoute: AuthenticatedEditarCurriculoIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CriarContaRoute: CriarContaRoute,
   CriarCurriculoRoute: CriarCurriculoRoute,
   EntrarRoute: EntrarRoute,
