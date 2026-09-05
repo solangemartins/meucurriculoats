@@ -14,6 +14,9 @@ import { Route as CriarContaRouteImport } from './routes/criar-conta'
 import { Route as CriarCurriculoRouteImport } from './routes/criar-curriculo'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as EsqueciMinhaSenhaRouteImport } from './routes/esqueci-minha-senha'
+import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +44,21 @@ const EsqueciMinhaSenhaRoute = EsqueciMinhaSenhaRouteImport.update({
   path: '/esqueci-minha-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
+  id: '/politica-de-privacidade',
+  path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
   id: '/visualizar-curriculo',
   path: '/visualizar-curriculo',
@@ -53,6 +71,9 @@ export interface FileRoutesByFullPath {
   '/criar-curriculo': typeof CriarCurriculoRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +82,9 @@ export interface FileRoutesByTo {
   '/criar-curriculo': typeof CriarCurriculoRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesById {
@@ -70,6 +94,9 @@ export interface FileRoutesById {
   '/criar-curriculo': typeof CriarCurriculoRoute
   '/entrar': typeof EntrarRoute
   '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +107,9 @@ export interface FileRouteTypes {
     | '/criar-curriculo'
     | '/entrar'
     | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
     | '/visualizar-curriculo'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +118,9 @@ export interface FileRouteTypes {
     | '/criar-curriculo'
     | '/entrar'
     | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
     | '/visualizar-curriculo'
   id:
     | '__root__'
@@ -96,6 +129,9 @@ export interface FileRouteTypes {
     | '/criar-curriculo'
     | '/entrar'
     | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
     | '/visualizar-curriculo'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +141,9 @@ export interface RootRouteChildren {
   CriarCurriculoRoute: typeof CriarCurriculoRoute
   EntrarRoute: typeof EntrarRoute
   EsqueciMinhaSenhaRoute: typeof EsqueciMinhaSenhaRoute
+  PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
+  TermosDeUsoRoute: typeof TermosDeUsoRoute
   VisualizarCurriculoRoute: typeof VisualizarCurriculoRoute
 }
 
@@ -145,6 +184,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsqueciMinhaSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politica-de-privacidade': {
+      id: '/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-uso': {
+      id: '/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof TermosDeUsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/visualizar-curriculo': {
       id: '/visualizar-curriculo'
       path: '/visualizar-curriculo'
@@ -161,6 +221,9 @@ const rootRouteChildren: RootRouteChildren = {
   CriarCurriculoRoute: CriarCurriculoRoute,
   EntrarRoute: EntrarRoute,
   EsqueciMinhaSenhaRoute: EsqueciMinhaSenhaRoute,
+  PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
+  TermosDeUsoRoute: TermosDeUsoRoute,
   VisualizarCurriculoRoute: VisualizarCurriculoRoute,
 }
 export const routeTree = rootRouteImport
