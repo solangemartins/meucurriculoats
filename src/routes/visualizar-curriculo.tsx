@@ -1,14 +1,16 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ScanSearch } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
 import { PageShell } from "@/components/layout/PageShell";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { loadDraft } from "@/lib/resume/draft";
+import { getDraftResumeId, loadDraft } from "@/lib/resume/draft";
 import type { ResumeData } from "@/lib/resume/types";
+
 
 export const Route = createFileRoute("/visualizar-curriculo")({
   head: () => ({
