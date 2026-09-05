@@ -47,8 +47,8 @@ function PasswordField({
   id: string;
   label: string;
   autoComplete: string;
-  error?: string;
-  hint?: string;
+  error?: string | undefined;
+  hint?: string | undefined;
 } & React.ComponentProps<"input">) {
   const [visible, setVisible] = useState(false);
   return (
@@ -164,7 +164,7 @@ export function SignInForm({
         <div className="flex items-center gap-2">
           <Checkbox
             id="lembrar"
-            checked={form.watch("remember")}
+            checked={form.watch("remember") === true}
             onCheckedChange={(checked) => form.setValue("remember", checked === true)}
           />
           <Label htmlFor="lembrar" className="text-sm font-normal">
@@ -200,7 +200,7 @@ export function SignUpForm({ onSuccess }: { onSuccess?: () => void }) {
       password: values.password,
       options: {
         data: { name: values.name },
-        emailRedirectTo: typeof window !== "undefined" ? window.location.origin : undefined,
+        ...(typeof window !== "undefined" ? { emailRedirectTo: window.location.origin } : {}),
       },
     });
     if (error) {

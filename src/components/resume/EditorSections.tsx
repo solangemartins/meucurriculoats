@@ -39,8 +39,8 @@ function ItemCard({
 }: {
   title: string;
   onRemove: () => void;
-  onMoveUp?: () => void;
-  onMoveDown?: () => void;
+  onMoveUp?: (() => void) | undefined;
+  onMoveDown?: (() => void) | undefined;
   children: React.ReactNode;
 }) {
   return (

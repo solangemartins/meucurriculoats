@@ -99,7 +99,6 @@ function Perfil() {
   const alterarSenha = async (valores: z.infer<typeof senhaSchema>) => {
     const { error } = await supabase.auth.updateUser({
       password: valores.password,
-      // @ts-expect-error current_password é exigido pelo backend em troca de senha logada
       current_password: valores.current,
     });
     if (error) {
