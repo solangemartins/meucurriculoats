@@ -41,6 +41,53 @@ export type Database = {
         }
         Relationships: []
       }
+      resume_analyses: {
+        Row: {
+          analysis_result: Json
+          company: string
+          created_at: string
+          id: string
+          job_description: string
+          job_title: string
+          overall_score: number
+          resume_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          analysis_result?: Json
+          company?: string
+          created_at?: string
+          id?: string
+          job_description?: string
+          job_title?: string
+          overall_score?: number
+          resume_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          analysis_result?: Json
+          company?: string
+          created_at?: string
+          id?: string
+          job_description?: string
+          job_title?: string
+          overall_score?: number
+          resume_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resume_analyses_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       resumes: {
         Row: {
           created_at: string

@@ -17,9 +17,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/redefinir-senha")({
   head: () => ({
     meta: [
-      { title: "Criar nova senha — Currículo ATS" },
+      { title: "Criar nova senha — Meu Currículo ATS" },
       { name: "description", content: "Defina e confirme sua nova senha para voltar a acessar sua conta." },
-      { property: "og:title", content: "Criar nova senha — Currículo ATS" },
+      { property: "og:title", content: "Criar nova senha — Meu Currículo ATS" },
       { property: "og:description", content: "Defina uma nova senha com segurança." },
     ],
   }),
@@ -84,7 +84,7 @@ function RedefinirSenha() {
   return (
     <PageShell>
       <div className="mx-auto max-w-md">
-        <h1 className="sr-only">Currículo ATS</h1>
+        <h1 className="sr-only">Meu Currículo ATS</h1>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Criar nova senha</CardTitle>

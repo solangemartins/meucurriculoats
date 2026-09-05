@@ -1,10 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Copy, FileDown, FilePlus2, FileText, Loader2, Pencil, Trash2 } from "lucide-react";
+import {
+  Copy,
+  FileDown,
+  FilePlus2,
+  FileText,
+  History,
+  Loader2,
+  Pencil,
+  ScanSearch,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { AnalysisHistoryDialog } from "@/components/analysis/AnalysisHistoryDialog";
+import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
 import { PageShell } from "@/components/layout/PageShell";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   AlertDialog,
@@ -29,7 +42,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { listAnalyses } from "@/lib/analysis/api";
+import { scoreBand } from "@/lib/analysis/types";
 import { useAuth } from "@/lib/auth-context";
+
 import {
   deleteResume,
   duplicateResume,
@@ -44,12 +60,12 @@ import { TEMPLATES } from "@/lib/resume/types";
 export const Route = createFileRoute("/_authenticated/meus-curriculos")({
   head: () => ({
     meta: [
-      { title: "Meus currículos — Currículo ATS" },
+      { title: "Meus currículos — Meu Currículo ATS" },
       {
         name: "description",
         content: "Veja, continue editando, duplique, renomeie ou exporte os currículos salvos na sua conta.",
       },
-      { property: "og:title", content: "Meus currículos — Currículo ATS" },
+      { property: "og:title", content: "Meus currículos — Meu Currículo ATS" },
       { property: "og:description", content: "Seus currículos salvos, prontos para atualizar." },
     ],
   }),
@@ -73,12 +89,22 @@ function MeusCurriculos() {
   const [renomear, setRenomear] = useState<ResumeRow | null>(null);
   const [novoTitulo, setNovoTitulo] = useState("");
   const [excluir, setExcluir] = useState<ResumeRow | null>(null);
+  const [analisar, setAnalisar] = useState<ResumeRow | null>(null);
+  const [historico, setHistorico] = useState<ResumeRow | null>(null);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["curriculos", user?.id],
     queryFn: listResumes,
     enabled: Boolean(user),
   });
+
+  const { data: analises } = useQuery({
+    queryKey: ["analises", "todas", user?.id],
+    queryFn: () => listAnalyses(),
+    enabled: Boolean(user),
+  });
+
+
 
   const invalidar = () => queryClient.invalidateQueries({ queryKey: ["curriculos", user?.id] });
 
@@ -161,6 +187,7 @@ function MeusCurriculos() {
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.map((row) => {
             const modelo = TEMPLATES.find((t) => t.id === row.template)?.nome ?? "Clássico";
+            const ultima = analises?.find((a) => a.resume_id === row.id);
             return (
               <li key={row.id}>
                 <Card className="flex h-full flex-col">
@@ -175,6 +202,15 @@ function MeusCurriculos() {
                     <p className="text-xs text-muted-foreground">
                       Atualizado em {dataBr(row.updated_at)}
                     </p>
+                    {ultima ? (
+                      <p className="text-xs text-muted-foreground">
+                        Última análise: {ultima.overall_score}/100 (
+                        {scoreBand(ultima.overall_score).rotulo}) para “{ultima.job_title}” em{" "}
+                        {dataBr(ultima.created_at)}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">Nenhuma análise de vaga salva ainda.</p>
+                    )}
                   </CardContent>
                   <CardFooter className="flex flex-wrap gap-2">
                     <Button
@@ -182,6 +218,12 @@ function MeusCurriculos() {
                       onClick={() => navigate({ to: "/editar-curriculo/$id", params: { id: row.id } })}
                     >
                       <Pencil className="size-4" /> Editar
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setAnalisar(row)}>
+                      <ScanSearch className="size-4" /> Analisar vaga
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setHistorico(row)}>
+                      <History className="size-4" /> Histórico
                     </Button>
                     <Button
                       size="sm"
@@ -201,6 +243,7 @@ function MeusCurriculos() {
                     >
                       <Copy className="size-4" /> Duplicar
                     </Button>
+
                     <Button
                       size="sm"
                       variant="ghost"
@@ -276,6 +319,35 @@ function MeusCurriculos() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {analisar ? (
+        <JobAnalysisDialog
+          open
+          onOpenChange={(aberto) => {
+            if (!aberto) {
+              setAnalisar(null);
+              void queryClient.invalidateQueries({ queryKey: ["analises"] });
+            }
+          }}
+          data={rowToResume(analisar)}
+          resumeId={analisar.id}
+          initial={{ job: { jobTitle: "", company: "", jobDescription: "" }, result: null }}
+        />
+      ) : null}
+
+      {historico ? (
+        <AnalysisHistoryDialog
+          open
+          onOpenChange={(aberto) => {
+            if (!aberto) {
+              setHistorico(null);
+              void queryClient.invalidateQueries({ queryKey: ["analises"] });
+            }
+          }}
+          resumeId={historico.id}
+          resumeTitle={historico.title}
+        />
+      ) : null}
     </PageShell>
+
   );
 }

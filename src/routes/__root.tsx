@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Currículo ATS — currículo profissional gratuito" },
+      { title: "Meu Currículo ATS — currículo profissional gratuito" },
       {
         name: "description",
         content:

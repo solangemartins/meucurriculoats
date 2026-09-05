@@ -33,12 +33,12 @@ import { getMyProfile, updateMyName } from "@/lib/resume/api";
 export const Route = createFileRoute("/_authenticated/perfil")({
   head: () => ({
     meta: [
-      { title: "Meu perfil — Currículo ATS" },
+      { title: "Meu perfil — Meu Currículo ATS" },
       {
         name: "description",
-        content: "Atualize seu nome, altere a senha da conta ou exclua seus dados do Currículo ATS.",
+        content: "Atualize seu nome, altere a senha da conta ou exclua seus dados do Meu Currículo ATS.",
       },
-      { property: "og:title", content: "Meu perfil — Currículo ATS" },
+      { property: "og:title", content: "Meu perfil — Meu Currículo ATS" },
       { property: "og:description", content: "Gerencie os dados da sua conta." },
     ],
   }),

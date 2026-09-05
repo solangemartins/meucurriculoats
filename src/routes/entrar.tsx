@@ -9,13 +9,13 @@ import { useAuth } from "@/lib/auth-context";
 export const Route = createFileRoute("/entrar")({
   head: () => ({
     meta: [
-      { title: "Entrar — Currículo ATS" },
+      { title: "Entrar — Meu Currículo ATS" },
       {
         name: "description",
         content: "Acesse sua conta para salvar, editar e exportar seus currículos compatíveis com ATS.",
       },
-      { property: "og:title", content: "Entrar — Currículo ATS" },
-      { property: "og:description", content: "Acesse sua conta do Currículo ATS." },
+      { property: "og:title", content: "Entrar — Meu Currículo ATS" },
+      { property: "og:description", content: "Acesse sua conta do Meu Currículo ATS." },
     ],
   }),
   component: Entrar,
@@ -32,7 +32,7 @@ function Entrar() {
   return (
     <PageShell>
       <div className="mx-auto max-w-md">
-        <h1 className="sr-only">Currículo ATS</h1>
+        <h1 className="sr-only">Meu Currículo ATS</h1>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Entrar</CardTitle>

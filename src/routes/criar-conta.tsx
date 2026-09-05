@@ -9,12 +9,12 @@ import { useAuth } from "@/lib/auth-context";
 export const Route = createFileRoute("/criar-conta")({
   head: () => ({
     meta: [
-      { title: "Criar conta — Currículo ATS" },
+      { title: "Criar conta — Meu Currículo ATS" },
       {
         name: "description",
         content: "Crie sua conta com nome, e-mail e senha para salvar e exportar seus currículos.",
       },
-      { property: "og:title", content: "Criar conta — Currículo ATS" },
+      { property: "og:title", content: "Criar conta — Meu Currículo ATS" },
       { property: "og:description", content: "Cadastro rápido, sem confirmação de e-mail." },
     ],
   }),
@@ -32,7 +32,7 @@ function CriarConta() {
   return (
     <PageShell>
       <div className="mx-auto max-w-md">
-        <h1 className="sr-only">Currículo ATS</h1>
+        <h1 className="sr-only">Meu Currículo ATS</h1>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Criar conta</CardTitle>

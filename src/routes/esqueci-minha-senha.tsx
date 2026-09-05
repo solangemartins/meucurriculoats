@@ -16,13 +16,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/esqueci-minha-senha")({
   head: () => ({
     meta: [
-      { title: "Esqueci minha senha — Currículo ATS" },
+      { title: "Esqueci minha senha — Meu Currículo ATS" },
       {
         name: "description",
         content: "Informe seu e-mail para receber um link seguro e criar uma nova senha.",
       },
-      { property: "og:title", content: "Esqueci minha senha — Currículo ATS" },
-      { property: "og:description", content: "Recupere o acesso à sua conta do Currículo ATS." },
+      { property: "og:title", content: "Esqueci minha senha — Meu Currículo ATS" },
+      { property: "og:description", content: "Recupere o acesso à sua conta do Meu Currículo ATS." },
     ],
   }),
   component: EsqueciSenha,
@@ -55,7 +55,7 @@ function EsqueciSenha() {
   return (
     <PageShell>
       <div className="mx-auto max-w-md">
-        <h1 className="sr-only">Currículo ATS</h1>
+        <h1 className="sr-only">Meu Currículo ATS</h1>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Esqueci minha senha</CardTitle>

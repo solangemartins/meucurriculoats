@@ -18,13 +18,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Currículo ATS — crie um currículo profissional gratuito" },
+      { title: "Meu Currículo ATS — crie um currículo profissional gratuito" },
       {
         name: "description",
         content:
           "Preencha, edite e visualize seu currículo compatível com sistemas ATS sem cadastro. Crie a conta só para salvar ou exportar em PDF.",
       },
-      { property: "og:title", content: "Currículo ATS — crie um currículo profissional gratuito" },
+      { property: "og:title", content: "Meu Currículo ATS — crie um currículo profissional gratuito" },
       {
         property: "og:description",
         content:
@@ -37,6 +37,12 @@ export const Route = createFileRoute("/")({
 
 const BENEFICIOS = [
   {
+    icon: ScanSearch,
+    titulo: "Análise de compatibilidade com a vaga",
+    texto:
+      "Cole a descrição de uma vaga e receba uma nota de 0 a 100, com pontos fortes, lacunas e sugestões. Sem cadastro.",
+  },
+  {
     icon: ListChecks,
     titulo: "Estrutura compatível com ATS",
     texto: "Uma coluna, títulos padronizados e texto real: o formato que os sistemas leem sem erro.",
@@ -46,6 +52,7 @@ const BENEFICIOS = [
     titulo: "Edição fácil",
     texto: "Seções organizadas, campos claros e dicas curtas ao lado de cada informação.",
   },
+
   {
     icon: Eye,
     titulo: "Visualização em tempo real",
@@ -81,9 +88,17 @@ const PASSOS = [
   },
   {
     numero: "3",
-    titulo: "Entre ou crie uma conta para salvar ou exportar",
-    texto: "A conta pede apenas nome, e-mail e senha. Nada do que você escreveu é perdido.",
+    titulo: "Analise seu currículo para uma vaga",
+    texto:
+      "Cole a descrição da vaga e veja a compatibilidade de 0 a 100, com pontos fortes, lacunas e sugestões — antes de qualquer cadastro.",
   },
+  {
+    numero: "4",
+    titulo: "Entre ou crie uma conta para salvar ou exportar",
+    texto:
+      "A conta pede apenas nome, e-mail e senha, guarda seus currículos e o histórico das análises. Nada do que você escreveu é perdido.",
+  },
+
 ];
 
 function ResumeMock() {
@@ -154,7 +169,7 @@ function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-bold sm:text-3xl">Por que usar o Currículo ATS</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">Por que usar o Meu Currículo ATS</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {BENEFICIOS.map((item) => (
               <Card key={item.titulo} className="h-full">
@@ -171,7 +186,7 @@ function Home() {
         <section className="surface-soft">
           <div className="mx-auto max-w-6xl px-4 py-14">
             <h2 className="text-2xl font-bold sm:text-3xl">Como funciona</h2>
-            <ol className="mt-8 grid gap-4 md:grid-cols-3">
+            <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {PASSOS.map((passo) => (
                 <li key={passo.numero} className="card-elevated p-5">
                   <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">

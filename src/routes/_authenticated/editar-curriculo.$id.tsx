@@ -11,9 +11,9 @@ import { getResume, rowToResume } from "@/lib/resume/api";
 export const Route = createFileRoute("/_authenticated/editar-curriculo/$id")({
   head: () => ({
     meta: [
-      { title: "Editar currículo — Currículo ATS" },
+      { title: "Editar currículo — Meu Currículo ATS" },
       { name: "description", content: "Atualize um currículo salvo na sua conta e exporte novamente em PDF." },
-      { property: "og:title", content: "Editar currículo — Currículo ATS" },
+      { property: "og:title", content: "Editar currículo — Meu Currículo ATS" },
       { property: "og:description", content: "Continue editando um currículo salvo." },
     ],
   }),

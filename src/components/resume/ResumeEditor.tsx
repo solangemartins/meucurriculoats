@@ -1,9 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
-import { CloudOff, Download, Eye, FileDown, Loader2, PencilLine, Save } from "lucide-react";
+import { CloudOff, Download, Eye, FileDown, Loader2, PencilLine, Save, ScanSearch } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
+import type { AnalysisRewrite } from "@/lib/analysis/types";
 import { AuthDialog } from "@/components/auth/AuthDialog";
+
 import {
   AdditionalSection,
   CertificationsSection,
@@ -90,6 +93,9 @@ export function ResumeEditor({
   const [salvandoManual, setSalvandoManual] = useState(false);
   const [erroConexao, setErroConexao] = useState(false);
   const [abaMobile, setAbaMobile] = useState("editar");
+  const [analiseAberta, setAnaliseAberta] = useState(false);
+
+
 
   const dataRef = useRef(data);
   dataRef.current = data;
@@ -105,6 +111,26 @@ export function ResumeEditor({
   }, []);
 
   const quality = useMemo(() => qualityScore(data), [data]);
+
+  // Aplica no currículo um texto sugerido pela análise, apenas quando a pessoa clica.
+  const aplicarReescrita = useCallback(
+    (rewrite: AnalysisRewrite, texto: string) => {
+      update((d) => {
+        if (rewrite.alvo === "resumo") d.personal.summary = texto;
+        else if (rewrite.alvo === "objetivo") d.objective.objective = texto;
+        else if (rewrite.alvo === "experiencia") {
+          const alvo = d.experiences.find((e) => e.id === rewrite.alvoId) ?? d.experiences[0];
+          if (alvo) alvo.description = texto;
+        } else if (rewrite.alvo === "projeto") {
+          const alvo = d.projects.find((p) => p.id === rewrite.alvoId) ?? d.projects[0];
+          if (alvo) alvo.description = texto;
+        }
+      });
+      toast.success("Sugestão aplicada ao currículo. Revise antes de exportar.");
+    },
+    [update],
+  );
+
 
   // Rascunho local (nunca guarda senha)
   useEffect(() => {
@@ -300,7 +326,11 @@ export function ResumeEditor({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" onClick={() => setAnaliseAberta(true)}>
+            <ScanSearch className="size-4" /> Analisar para uma vaga
+          </Button>
           <Button variant="outline" onClick={salvarNaConta} disabled={salvandoManual}>
+
             {salvandoManual ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
             Salvar na minha conta
           </Button>
@@ -377,6 +407,16 @@ export function ResumeEditor({
           </Button>
         ) : null}
       </div>
+
+      <JobAnalysisDialog
+        open={analiseAberta}
+        onOpenChange={setAnaliseAberta}
+        data={data}
+        resumeId={resumeId}
+        onApplyRewrite={aplicarReescrita}
+      />
+
+
 
       <AuthDialog
         open={authDialog !== null}
