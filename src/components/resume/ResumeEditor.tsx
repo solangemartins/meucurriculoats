@@ -326,7 +326,11 @@ export function ResumeEditor({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" onClick={() => setAnaliseAberta(true)}>
+            <ScanSearch className="size-4" /> Analisar para uma vaga
+          </Button>
           <Button variant="outline" onClick={salvarNaConta} disabled={salvandoManual}>
+
             {salvandoManual ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
             Salvar na minha conta
           </Button>
