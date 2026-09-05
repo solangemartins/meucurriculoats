@@ -89,12 +89,22 @@ function MeusCurriculos() {
   const [renomear, setRenomear] = useState<ResumeRow | null>(null);
   const [novoTitulo, setNovoTitulo] = useState("");
   const [excluir, setExcluir] = useState<ResumeRow | null>(null);
+  const [analisar, setAnalisar] = useState<ResumeRow | null>(null);
+  const [historico, setHistorico] = useState<ResumeRow | null>(null);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["curriculos", user?.id],
     queryFn: listResumes,
     enabled: Boolean(user),
   });
+
+  const { data: analises } = useQuery({
+    queryKey: ["analises", "todas", user?.id],
+    queryFn: () => listAnalyses(),
+    enabled: Boolean(user),
+  });
+
+
 
   const invalidar = () => queryClient.invalidateQueries({ queryKey: ["curriculos", user?.id] });
 
