@@ -112,6 +112,26 @@ export function ResumeEditor({
 
   const quality = useMemo(() => qualityScore(data), [data]);
 
+  // Aplica no currículo um texto sugerido pela análise, apenas quando a pessoa clica.
+  const aplicarReescrita = useCallback(
+    (rewrite: AnalysisRewrite, texto: string) => {
+      update((d) => {
+        if (rewrite.alvo === "resumo") d.personal.summary = texto;
+        else if (rewrite.alvo === "objetivo") d.objective.objective = texto;
+        else if (rewrite.alvo === "experiencia") {
+          const alvo = d.experiences.find((e) => e.id === rewrite.alvoId) ?? d.experiences[0];
+          if (alvo) alvo.description = texto;
+        } else if (rewrite.alvo === "projeto") {
+          const alvo = d.projects.find((p) => p.id === rewrite.alvoId) ?? d.projects[0];
+          if (alvo) alvo.description = texto;
+        }
+      });
+      toast.success("Sugestão aplicada ao currículo. Revise antes de exportar.");
+    },
+    [update],
+  );
+
+
   // Rascunho local (nunca guarda senha)
   useEffect(() => {
     if (!keepLocalDraft) return;
