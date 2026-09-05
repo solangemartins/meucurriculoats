@@ -471,16 +471,14 @@ export function SkillsSection({ data, update }: { data: ResumeData; update: Upda
         <p className="mb-2 text-xs font-medium text-muted-foreground">Sugestões para começar</p>
         <div className="flex flex-wrap gap-2">
           {SKILL_SUGGESTIONS.filter((s) => !data.skills.includes(s)).map((s) => (
-            <Badge
-              key={s}
-              asChild
-              variant="outline"
-              className="cursor-pointer hover:border-primary hover:text-primary"
-            >
-              <button type="button" onClick={() => adicionar(s)}>
+            <button key={s} type="button" onClick={() => adicionar(s)}>
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:border-primary hover:text-primary"
+              >
                 + {s}
-              </button>
-            </Badge>
+              </Badge>
+            </button>
           ))}
         </div>
       </div>
