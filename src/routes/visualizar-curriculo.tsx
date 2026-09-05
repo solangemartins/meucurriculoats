@@ -32,10 +32,13 @@ export const Route = createFileRoute("/visualizar-curriculo")({
 
 function VisualizarCurriculo() {
   const [data, setData] = useState<ResumeData | null | "vazio">(null);
+  const [resumeId, setResumeId] = useState<string | null>(null);
+  const [analiseAberta, setAnaliseAberta] = useState(false);
 
   useEffect(() => {
     const rascunho = loadDraft();
     setData(rascunho ?? "vazio");
+    setResumeId(getDraftResumeId());
   }, []);
 
   return (
@@ -47,12 +50,20 @@ function VisualizarCurriculo() {
             Este é o conteúdo que será exportado, sem menus nem botões do site.
           </p>
         </div>
-        <Button asChild variant="outline">
-          <Link to="/criar-curriculo">
-            <ArrowLeft className="size-4" /> Voltar para o editor
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          {data && data !== "vazio" ? (
+            <Button variant="secondary" onClick={() => setAnaliseAberta(true)}>
+              <ScanSearch className="size-4" /> Analisar para uma vaga
+            </Button>
+          ) : null}
+          <Button asChild variant="outline">
+            <Link to="/criar-curriculo">
+              <ArrowLeft className="size-4" /> Voltar para o editor
+            </Link>
+          </Button>
+        </div>
       </div>
+
 
       {data === null ? (
         <Skeleton className="h-[700px] w-full rounded-xl" />
