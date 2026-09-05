@@ -18,13 +18,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Currículo ATS — crie um currículo profissional gratuito" },
+      { title: "Meu Currículo ATS — crie um currículo profissional gratuito" },
       {
         name: "description",
         content:
           "Preencha, edite e visualize seu currículo compatível com sistemas ATS sem cadastro. Crie a conta só para salvar ou exportar em PDF.",
       },
-      { property: "og:title", content: "Currículo ATS — crie um currículo profissional gratuito" },
+      { property: "og:title", content: "Meu Currículo ATS — crie um currículo profissional gratuito" },
       {
         property: "og:description",
         content:
@@ -154,7 +154,7 @@ function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-bold sm:text-3xl">Por que usar o Currículo ATS</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">Por que usar o Meu Currículo ATS</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {BENEFICIOS.map((item) => (
               <Card key={item.titulo} className="h-full">

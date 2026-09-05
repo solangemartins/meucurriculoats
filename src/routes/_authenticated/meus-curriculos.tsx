@@ -44,12 +44,12 @@ import { TEMPLATES } from "@/lib/resume/types";
 export const Route = createFileRoute("/_authenticated/meus-curriculos")({
   head: () => ({
     meta: [
-      { title: "Meus currículos — Currículo ATS" },
+      { title: "Meus currículos — Meu Currículo ATS" },
       {
         name: "description",
         content: "Veja, continue editando, duplique, renomeie ou exporte os currículos salvos na sua conta.",
       },
-      { property: "og:title", content: "Meus currículos — Currículo ATS" },
+      { property: "og:title", content: "Meus currículos — Meu Currículo ATS" },
       { property: "og:description", content: "Seus currículos salvos, prontos para atualizar." },
     ],
   }),

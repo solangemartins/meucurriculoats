@@ -13,12 +13,12 @@ import type { ResumeData } from "@/lib/resume/types";
 export const Route = createFileRoute("/visualizar-curriculo")({
   head: () => ({
     meta: [
-      { title: "Visualizar currículo — Currículo ATS" },
+      { title: "Visualizar currículo — Meu Currículo ATS" },
       {
         name: "description",
         content: "Veja seu currículo completo em uma única coluna, exatamente como ele será exportado em PDF.",
       },
-      { property: "og:title", content: "Visualizar currículo — Currículo ATS" },
+      { property: "og:title", content: "Visualizar currículo — Meu Currículo ATS" },
       {
         property: "og:description",
         content: "Pré-visualização completa do currículo antes de salvar ou exportar.",

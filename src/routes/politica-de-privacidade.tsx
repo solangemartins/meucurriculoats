@@ -5,12 +5,12 @@ import { PageShell } from "@/components/layout/PageShell";
 export const Route = createFileRoute("/politica-de-privacidade")({
   head: () => ({
     meta: [
-      { title: "Política de Privacidade — Currículo ATS" },
+      { title: "Política de Privacidade — Meu Currículo ATS" },
       {
         name: "description",
-        content: "Como tratamos seus dados no Currículo ATS: rascunho local, dados da conta e exclusão.",
+        content: "Como tratamos seus dados no Meu Currículo ATS: rascunho local, dados da conta e exclusão.",
       },
-      { property: "og:title", content: "Política de Privacidade — Currículo ATS" },
+      { property: "og:title", content: "Política de Privacidade — Meu Currículo ATS" },
       { property: "og:description", content: "Transparência sobre o uso dos seus dados." },
     ],
   }),

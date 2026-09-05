@@ -5,13 +5,13 @@ import { PageShell } from "@/components/layout/PageShell";
 export const Route = createFileRoute("/termos-de-uso")({
   head: () => ({
     meta: [
-      { title: "Termos de Uso — Currículo ATS" },
+      { title: "Termos de Uso — Meu Currículo ATS" },
       {
         name: "description",
-        content: "Regras de uso do Currículo ATS: responsabilidades, conteúdo do usuário e limites do serviço.",
+        content: "Regras de uso do Meu Currículo ATS: responsabilidades, conteúdo do usuário e limites do serviço.",
       },
-      { property: "og:title", content: "Termos de Uso — Currículo ATS" },
-      { property: "og:description", content: "Condições de uso da plataforma Currículo ATS." },
+      { property: "og:title", content: "Termos de Uso — Meu Currículo ATS" },
+      { property: "og:description", content: "Condições de uso da plataforma Meu Currículo ATS." },
     ],
   }),
   component: Termos,
@@ -26,7 +26,7 @@ function Termos() {
 
         <h2 className="text-xl font-semibold">1. Sobre o serviço</h2>
         <p className="text-sm text-muted-foreground">
-          O Currículo ATS é uma ferramenta gratuita para montar, editar, visualizar e exportar currículos em
+          O Meu Currículo ATS é uma ferramenta gratuita para montar, editar, visualizar e exportar currículos em
           formato compatível com sistemas de triagem. O uso do editor não exige cadastro.
         </p>
 

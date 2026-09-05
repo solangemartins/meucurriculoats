@@ -10,13 +10,13 @@ import { emptyResume, type ResumeData } from "@/lib/resume/types";
 export const Route = createFileRoute("/criar-curriculo")({
   head: () => ({
     meta: [
-      { title: "Criar currículo — Currículo ATS" },
+      { title: "Criar currículo — Meu Currículo ATS" },
       {
         name: "description",
         content:
           "Preencha seu currículo em seções simples, escolha um modelo compatível com ATS e veja o resultado em tempo real. Sem cadastro.",
       },
-      { property: "og:title", content: "Criar currículo — Currículo ATS" },
+      { property: "og:title", content: "Criar currículo — Meu Currículo ATS" },
       {
         property: "og:description",
         content: "Editor gratuito com pré-visualização em tempo real e rascunho salvo no seu dispositivo.",
