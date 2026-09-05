@@ -20,6 +20,7 @@ import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
 import { Route as AuthenticatedMeusCurriculosRouteImport } from './routes/_authenticated/meus-curriculos'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedEditarCurriculoIdRouteImport } from './routes/_authenticated/editar-curriculo.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -77,6 +78,11 @@ const AuthenticatedMeusCurriculosRoute =
     path: '/meus-curriculos',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedEditarCurriculoIdRoute =
   AuthenticatedEditarCurriculoIdRouteImport.update({
     id: '/editar-curriculo/$id',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
   '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesByTo {
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
   '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesById {
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
   '/_authenticated/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/_authenticated/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRouteTypes {
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/visualizar-curriculo'
     | '/meus-curriculos'
+    | '/perfil'
     | '/editar-curriculo/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/visualizar-curriculo'
     | '/meus-curriculos'
+    | '/perfil'
     | '/editar-curriculo/$id'
   id:
     | '__root__'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/termos-de-uso'
     | '/visualizar-curriculo'
     | '/_authenticated/meus-curriculos'
+    | '/_authenticated/perfil'
     | '/_authenticated/editar-curriculo/$id'
   fileRoutesById: FileRoutesById
 }
@@ -260,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMeusCurriculosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/editar-curriculo/$id': {
       id: '/_authenticated/editar-curriculo/$id'
       path: '/editar-curriculo/$id'
@@ -272,11 +291,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedMeusCurriculosRoute: typeof AuthenticatedMeusCurriculosRoute
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
   AuthenticatedEditarCurriculoIdRoute: typeof AuthenticatedEditarCurriculoIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMeusCurriculosRoute: AuthenticatedMeusCurriculosRoute,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
   AuthenticatedEditarCurriculoIdRoute: AuthenticatedEditarCurriculoIdRoute,
 }
 

@@ -47,8 +47,8 @@ function PasswordField({
   id: string;
   label: string;
   autoComplete: string;
-  error?: string;
-  hint?: string;
+  error?: string | undefined;
+  hint?: string | undefined;
 } & React.ComponentProps<"input">) {
   const [visible, setVisible] = useState(false);
   return (
@@ -92,6 +92,8 @@ function mensagemErro(raw: string) {
   if (texto.includes("invalid login")) return "E-mail ou senha incorretos.";
   if (texto.includes("already registered") || texto.includes("already been registered"))
     return "Este e-mail já possui uma conta. Use a aba “Entrar”.";
+  if (texto.includes("pwned") || texto.includes("weak") || texto.includes("compromis"))
+    return "Essa senha aparece em vazamentos conhecidos. Escolha uma senha diferente.";
   if (texto.includes("password")) return "Senha inválida. Use pelo menos 8 caracteres.";
   if (texto.includes("network") || texto.includes("fetch"))
     return "Sem conexão agora. Tente novamente em instantes.";
@@ -164,7 +166,7 @@ export function SignInForm({
         <div className="flex items-center gap-2">
           <Checkbox
             id="lembrar"
-            checked={form.watch("remember")}
+            checked={form.watch("remember") === true}
             onCheckedChange={(checked) => form.setValue("remember", checked === true)}
           />
           <Label htmlFor="lembrar" className="text-sm font-normal">
@@ -200,7 +202,7 @@ export function SignUpForm({ onSuccess }: { onSuccess?: () => void }) {
       password: values.password,
       options: {
         data: { name: values.name },
-        emailRedirectTo: typeof window !== "undefined" ? window.location.origin : undefined,
+        ...(typeof window !== "undefined" ? { emailRedirectTo: window.location.origin } : {}),
       },
     });
     if (error) {

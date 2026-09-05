@@ -14,7 +14,7 @@ export function Field({
 }: {
   id: string;
   label: string;
-  hint?: string;
+  hint?: string | undefined;
   children: ReactNode;
 }) {
   return (
@@ -54,7 +54,7 @@ export function TextField({
 }: {
   id: string;
   label: string;
-  hint?: string;
+  hint?: string | undefined;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -87,7 +87,7 @@ export function AreaField({
 }: {
   id: string;
   label: string;
-  hint?: string;
+  hint?: string | undefined;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -126,7 +126,7 @@ export function MonthField({
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <Field id={id} label={label} hint={hint}>
