@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CriarContaRouteImport } from './routes/criar-conta'
 import { Route as CriarCurriculoRouteImport } from './routes/criar-curriculo'
+import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as EsqueciMinhaSenhaRouteImport } from './routes/esqueci-minha-senha'
 import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,9 +21,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CriarContaRoute = CriarContaRouteImport.update({
+  id: '/criar-conta',
+  path: '/criar-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CriarCurriculoRoute = CriarCurriculoRouteImport.update({
   id: '/criar-curriculo',
   path: '/criar-curriculo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciMinhaSenhaRoute = EsqueciMinhaSenhaRouteImport.update({
+  id: '/esqueci-minha-senha',
+  path: '/esqueci-minha-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
@@ -31,31 +49,62 @@ const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/criar-conta': typeof CriarContaRoute
   '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/criar-conta': typeof CriarContaRoute
   '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/criar-conta': typeof CriarContaRoute
   '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
   '/visualizar-curriculo': typeof VisualizarCurriculoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/criar-curriculo' | '/visualizar-curriculo'
+  fullPaths:
+    | '/'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/visualizar-curriculo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/criar-curriculo' | '/visualizar-curriculo'
-  id: '__root__' | '/' | '/criar-curriculo' | '/visualizar-curriculo'
+  to:
+    | '/'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/visualizar-curriculo'
+  id:
+    | '__root__'
+    | '/'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/visualizar-curriculo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CriarContaRoute: typeof CriarContaRoute
   CriarCurriculoRoute: typeof CriarCurriculoRoute
+  EntrarRoute: typeof EntrarRoute
+  EsqueciMinhaSenhaRoute: typeof EsqueciMinhaSenhaRoute
   VisualizarCurriculoRoute: typeof VisualizarCurriculoRoute
 }
 
@@ -68,11 +117,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/criar-conta': {
+      id: '/criar-conta'
+      path: '/criar-conta'
+      fullPath: '/criar-conta'
+      preLoaderRoute: typeof CriarContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/criar-curriculo': {
       id: '/criar-curriculo'
       path: '/criar-curriculo'
       fullPath: '/criar-curriculo'
       preLoaderRoute: typeof CriarCurriculoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-minha-senha': {
+      id: '/esqueci-minha-senha'
+      path: '/esqueci-minha-senha'
+      fullPath: '/esqueci-minha-senha'
+      preLoaderRoute: typeof EsqueciMinhaSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/visualizar-curriculo': {
@@ -87,7 +157,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CriarContaRoute: CriarContaRoute,
   CriarCurriculoRoute: CriarCurriculoRoute,
+  EntrarRoute: EntrarRoute,
+  EsqueciMinhaSenhaRoute: EsqueciMinhaSenhaRoute,
   VisualizarCurriculoRoute: VisualizarCurriculoRoute,
 }
 export const routeTree = rootRouteImport
