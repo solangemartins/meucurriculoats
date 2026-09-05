@@ -10,33 +10,175 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as CriarContaRouteImport } from './routes/criar-conta'
+import { Route as CriarCurriculoRouteImport } from './routes/criar-curriculo'
+import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as EsqueciMinhaSenhaRouteImport } from './routes/esqueci-minha-senha'
+import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
+import { Route as VisualizarCurriculoRouteImport } from './routes/visualizar-curriculo'
+import { Route as AuthenticatedMeusCurriculosRouteImport } from './routes/_authenticated/meus-curriculos'
+import { Route as AuthenticatedEditarCurriculoIdRouteImport } from './routes/_authenticated/editar-curriculo.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriarContaRoute = CriarContaRouteImport.update({
+  id: '/criar-conta',
+  path: '/criar-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriarCurriculoRoute = CriarCurriculoRouteImport.update({
+  id: '/criar-curriculo',
+  path: '/criar-curriculo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciMinhaSenhaRoute = EsqueciMinhaSenhaRouteImport.update({
+  id: '/esqueci-minha-senha',
+  path: '/esqueci-minha-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
+  id: '/politica-de-privacidade',
+  path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisualizarCurriculoRoute = VisualizarCurriculoRouteImport.update({
+  id: '/visualizar-curriculo',
+  path: '/visualizar-curriculo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMeusCurriculosRoute =
+  AuthenticatedMeusCurriculosRouteImport.update({
+    id: '/meus-curriculos',
+    path: '/meus-curriculos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEditarCurriculoIdRoute =
+  AuthenticatedEditarCurriculoIdRouteImport.update({
+    id: '/editar-curriculo/$id',
+    path: '/editar-curriculo/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/criar-conta': typeof CriarContaRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/criar-conta': typeof CriarContaRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/criar-conta': typeof CriarContaRoute
+  '/criar-curriculo': typeof CriarCurriculoRoute
+  '/entrar': typeof EntrarRoute
+  '/esqueci-minha-senha': typeof EsqueciMinhaSenhaRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
+  '/visualizar-curriculo': typeof VisualizarCurriculoRoute
+  '/_authenticated/meus-curriculos': typeof AuthenticatedMeusCurriculosRoute
+  '/_authenticated/editar-curriculo/$id': typeof AuthenticatedEditarCurriculoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
+    | '/visualizar-curriculo'
+    | '/meus-curriculos'
+    | '/editar-curriculo/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
+    | '/visualizar-curriculo'
+    | '/meus-curriculos'
+    | '/editar-curriculo/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/criar-conta'
+    | '/criar-curriculo'
+    | '/entrar'
+    | '/esqueci-minha-senha'
+    | '/politica-de-privacidade'
+    | '/redefinir-senha'
+    | '/termos-de-uso'
+    | '/visualizar-curriculo'
+    | '/_authenticated/meus-curriculos'
+    | '/_authenticated/editar-curriculo/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  CriarContaRoute: typeof CriarContaRoute
+  CriarCurriculoRoute: typeof CriarCurriculoRoute
+  EntrarRoute: typeof EntrarRoute
+  EsqueciMinhaSenhaRoute: typeof EsqueciMinhaSenhaRoute
+  PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
+  TermosDeUsoRoute: typeof TermosDeUsoRoute
+  VisualizarCurriculoRoute: typeof VisualizarCurriculoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +190,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/criar-conta': {
+      id: '/criar-conta'
+      path: '/criar-conta'
+      fullPath: '/criar-conta'
+      preLoaderRoute: typeof CriarContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/criar-curriculo': {
+      id: '/criar-curriculo'
+      path: '/criar-curriculo'
+      fullPath: '/criar-curriculo'
+      preLoaderRoute: typeof CriarCurriculoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-minha-senha': {
+      id: '/esqueci-minha-senha'
+      path: '/esqueci-minha-senha'
+      fullPath: '/esqueci-minha-senha'
+      preLoaderRoute: typeof EsqueciMinhaSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-privacidade': {
+      id: '/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-uso': {
+      id: '/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof TermosDeUsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visualizar-curriculo': {
+      id: '/visualizar-curriculo'
+      path: '/visualizar-curriculo'
+      fullPath: '/visualizar-curriculo'
+      preLoaderRoute: typeof VisualizarCurriculoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/meus-curriculos': {
+      id: '/_authenticated/meus-curriculos'
+      path: '/meus-curriculos'
+      fullPath: '/meus-curriculos'
+      preLoaderRoute: typeof AuthenticatedMeusCurriculosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/editar-curriculo/$id': {
+      id: '/_authenticated/editar-curriculo/$id'
+      path: '/editar-curriculo/$id'
+      fullPath: '/editar-curriculo/$id'
+      preLoaderRoute: typeof AuthenticatedEditarCurriculoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMeusCurriculosRoute: typeof AuthenticatedMeusCurriculosRoute
+  AuthenticatedEditarCurriculoIdRoute: typeof AuthenticatedEditarCurriculoIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMeusCurriculosRoute: AuthenticatedMeusCurriculosRoute,
+  AuthenticatedEditarCurriculoIdRoute: AuthenticatedEditarCurriculoIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  CriarContaRoute: CriarContaRoute,
+  CriarCurriculoRoute: CriarCurriculoRoute,
+  EntrarRoute: EntrarRoute,
+  EsqueciMinhaSenhaRoute: EsqueciMinhaSenhaRoute,
+  PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
+  TermosDeUsoRoute: TermosDeUsoRoute,
+  VisualizarCurriculoRoute: VisualizarCurriculoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
