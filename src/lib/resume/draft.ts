@@ -1,5 +1,7 @@
 import { normalizeResume, type ResumeData } from "./types";
 
+export const DRAFT_EVENT = "curriculo-ats:rascunho-substituido";
+
 const DRAFT_KEY = "curriculo-ats:rascunho";
 const PENDING_KEY = "curriculo-ats:acao-pendente";
 const RESUME_ID_KEY = "curriculo-ats:curriculo-id";
@@ -96,4 +98,10 @@ export function getDraftAdaptedMeta(): DraftAdaptedMeta | null {
   } catch {
     return null;
   }
+}
+
+/** Avisa telas abertas de que o rascunho local foi substituído (ex.: versão para uma vaga). */
+export function notifyDraftReplaced() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(DRAFT_EVENT));
 }

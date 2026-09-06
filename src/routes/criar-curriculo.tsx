@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getDraftAdaptedMeta, getDraftResumeId, loadDraft, type DraftAdaptedMeta } from "@/lib/resume/draft";
+import {
+  DRAFT_EVENT,
+  getDraftAdaptedMeta,
+  getDraftResumeId,
+  loadDraft,
+  type DraftAdaptedMeta,
+} from "@/lib/resume/draft";
 import { emptyResume, type ResumeData } from "@/lib/resume/types";
 
 export const Route = createFileRoute("/criar-curriculo")({
@@ -32,20 +38,28 @@ function CriarCurriculo() {
     resumeId: string | null;
     adapted: DraftAdaptedMeta | null;
   } | null>(null);
+  const [versao, setVersao] = useState(0);
 
   useEffect(() => {
-    const rascunho = loadDraft();
-    setEstado({
-      data: rascunho ?? emptyResume(),
-      resumeId: getDraftResumeId(),
-      adapted: getDraftAdaptedMeta(),
-    });
+    const carregar = () => {
+      const rascunho = loadDraft();
+      setEstado({
+        data: rascunho ?? emptyResume(),
+        resumeId: getDraftResumeId(),
+        adapted: getDraftAdaptedMeta(),
+      });
+      setVersao((atual) => atual + 1);
+    };
+    carregar();
+    window.addEventListener(DRAFT_EVENT, carregar);
+    return () => window.removeEventListener(DRAFT_EVENT, carregar);
   }, []);
 
   return (
     <PageShell wide showFooter={false}>
       {estado ? (
         <ResumeEditor
+          key={versao}
           initialData={estado.data}
           resumeId={estado.resumeId}
           keepLocalDraft

@@ -70,7 +70,13 @@ import {
   suggestAdaptedTitle,
   type ResumeRow,
 } from "@/lib/resume/api";
-import { loadDraft, saveDraft, setDraftAdaptedMeta, setDraftResumeId } from "@/lib/resume/draft";
+import {
+  loadDraft,
+  notifyDraftReplaced,
+  saveDraft,
+  setDraftAdaptedMeta,
+  setDraftResumeId,
+} from "@/lib/resume/draft";
 import { normalizeResume, type ResumeData } from "@/lib/resume/types";
 
 const MENSAGENS: Record<string, string> = {
@@ -362,6 +368,7 @@ export function AnalysisWizard({
             lastScore: resultado?.overallScore ?? null,
             preferences: prefs,
           });
+          notifyDraftReplaced();
           onOpenChange(false);
           await navigate({ to: "/criar-curriculo" });
           toast.success("Versão para esta vaga aberta no editor. Nada foi enviado para a nuvem ainda.");

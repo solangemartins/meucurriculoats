@@ -176,8 +176,8 @@ export function AnalysisResultPanel({
                 Nenhum termo relevante da vaga foi localizado no currículo.
               </p>
             ) : (
-              result.palavrasChaveEncontradas.map((k) => (
-                <Badge key={k} variant="secondary">
+              result.palavrasChaveEncontradas.map((k, i) => (
+                <Badge key={`enc-${k}-${i}`} variant="secondary">
                   {k}
                 </Badge>
               ))
@@ -199,8 +199,8 @@ export function AnalysisResultPanel({
                   Os termos relevantes da vaga aparecem no currículo.
                 </p>
               ) : (
-                result.palavrasChaveAusentes.map((k) => (
-                  <Badge key={k} variant="outline">
+                result.palavrasChaveAusentes.map((k, i) => (
+                  <Badge key={`aus-${k}-${i}`} variant="outline">
                     {k}
                   </Badge>
                 ))
