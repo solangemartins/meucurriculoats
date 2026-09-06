@@ -15,7 +15,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { AnalysisHistoryDialog } from "@/components/analysis/AnalysisHistoryDialog";
-import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
+import { AnalysisWizard } from "@/components/analysis/AnalysisWizard";
 import { PageShell } from "@/components/layout/PageShell";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -198,7 +198,30 @@ function MeusCurriculos() {
                     </p>
                   </CardHeader>
                   <CardContent className="flex-1 space-y-2 text-sm">
-                    <Badge variant="secondary">Modelo {modelo}</Badge>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant={row.kind === "adaptada" ? "default" : "outline"}>
+                        {row.kind === "adaptada" ? "Versão adaptada" : "Currículo principal"}
+                      </Badge>
+                      <Badge variant="secondary">Modelo {modelo}</Badge>
+                    </div>
+                    {row.kind === "adaptada" ? (
+                      <p className="text-xs text-muted-foreground">
+                        Vaga: {row.job_title || "não informada"}
+                        {row.job_company ? ` — ${row.job_company}` : ""}
+                        {row.parent_resume_id ? (
+                          <>
+                            {" • "}
+                            <Link
+                              to="/editar-curriculo/$id"
+                              params={{ id: row.parent_resume_id }}
+                              className="underline"
+                            >
+                              ver currículo original
+                            </Link>
+                          </>
+                        ) : null}
+                      </p>
+                    ) : null}
                     <p className="text-xs text-muted-foreground">
                       Atualizado em {dataBr(row.updated_at)}
                     </p>
@@ -306,6 +329,9 @@ function MeusCurriculos() {
             <AlertDialogTitle>Excluir “{excluir?.title}”?</AlertDialogTitle>
             <AlertDialogDescription>
               Esta ação não pode ser desfeita. O currículo será removido da sua conta.
+              {excluir?.kind === "adaptada"
+                ? " Seu currículo original não será afetado."
+                : ""}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -320,7 +346,7 @@ function MeusCurriculos() {
         </AlertDialogContent>
       </AlertDialog>
       {analisar ? (
-        <JobAnalysisDialog
+        <AnalysisWizard
           open
           onOpenChange={(aberto) => {
             if (!aberto) {
@@ -328,9 +354,17 @@ function MeusCurriculos() {
               void queryClient.invalidateQueries({ queryKey: ["analises"] });
             }
           }}
-          data={rowToResume(analisar)}
+          resumeData={rowToResume(analisar)}
           resumeId={analisar.id}
-          initial={{ job: { jobTitle: "", company: "", jobDescription: "" }, result: null }}
+          initialJob={
+            analisar.kind === "adaptada"
+              ? {
+                  jobTitle: analisar.job_title,
+                  company: analisar.job_company,
+                  jobDescription: analisar.job_description,
+                }
+              : null
+          }
         />
       ) : null}
 

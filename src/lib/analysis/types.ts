@@ -178,3 +178,54 @@ export function normalizeAnalysis(raw: unknown): AnalysisResult {
     criterios,
   };
 }
+
+/* ---------- Versão otimizada ---------- */
+
+export interface OptimizationProposal {
+  alvo: RewriteTarget;
+  alvoId: string;
+  alvoRotulo: string;
+  textoAtual: string;
+  textoSugerido: string;
+  observacao: string;
+}
+
+export interface OptimizationQuestion {
+  pergunta: string;
+  motivo: string;
+}
+
+export interface OptimizationResult {
+  resumoDasMudancas: string;
+  propostas: OptimizationProposal[];
+  perguntas: OptimizationQuestion[];
+}
+
+export function normalizeOptimization(raw: unknown): OptimizationResult {
+  const data = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
+  const propostas = (Array.isArray(data["propostas"]) ? data["propostas"] : [])
+    .map((item) => {
+      const o = (item ?? {}) as Record<string, unknown>;
+      const alvo = texto(o["alvo"]) as RewriteTarget;
+      return {
+        alvo: (["resumo", "objetivo", "experiencia", "projeto", "outro"] as string[]).includes(alvo)
+          ? alvo
+          : "outro",
+        alvoId: texto(o["alvoId"]),
+        alvoRotulo: texto(o["alvoRotulo"]),
+        textoAtual: texto(o["textoAtual"]),
+        textoSugerido: texto(o["textoSugerido"]),
+        observacao: texto(o["observacao"]),
+      } satisfies OptimizationProposal;
+    })
+    .filter((p) => p.textoSugerido);
+
+  const perguntas = (Array.isArray(data["perguntas"]) ? data["perguntas"] : [])
+    .map((item) => {
+      const o = (item ?? {}) as Record<string, unknown>;
+      return { pergunta: texto(o["pergunta"]), motivo: texto(o["motivo"]) } satisfies OptimizationQuestion;
+    })
+    .filter((p) => p.pergunta);
+
+  return { resumoDasMudancas: texto(data["resumoDasMudancas"]), propostas, perguntas };
+}

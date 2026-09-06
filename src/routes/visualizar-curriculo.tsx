@@ -2,7 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, ScanSearch } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
+import { AnalysisWizard } from "@/components/analysis/AnalysisWizard";
 import { PageShell } from "@/components/layout/PageShell";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -86,10 +86,10 @@ function VisualizarCurriculo() {
       )}
 
       {data && data !== "vazio" ? (
-        <JobAnalysisDialog
+        <AnalysisWizard
           open={analiseAberta}
           onOpenChange={setAnaliseAberta}
-          data={data}
+          resumeData={data}
           resumeId={resumeId}
         />
       ) : null}

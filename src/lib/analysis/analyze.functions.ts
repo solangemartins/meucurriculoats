@@ -1,20 +1,42 @@
 import { createServerFn } from "@tanstack/react-start";
 
 import { resumeToPlainText } from "./resume-text";
+import { normalizePreferences, type AnalysisPreferences } from "./preferences";
 import { MIN_JOB_DESCRIPTION, normalizeAnalysis, type AnalysisResult } from "./types";
+import { hasUsablePastedResume, hasUsableResume } from "./usable";
 import { normalizeResume } from "@/lib/resume/types";
 
+const IDIOMA: Record<AnalysisPreferences["language"], string> = {
+  pt: "português do Brasil",
+  en: "inglês",
+  es: "espanhol",
+};
+
+const TOM: Record<AnalysisPreferences["tone"], string> = {
+  equilibrado: "profissional e acessível",
+  direto: "direto, com frases curtas e foco em atividades e resultados",
+  tecnico: "técnico, destacando ferramentas, processos e termos da área",
+  executivo: "executivo, com ênfase em gestão, times, metas e impacto no negócio",
+};
+
+const OBJETIVO: Record<AnalysisPreferences["goal"], string> = {
+  ats: "aumentar a compatibilidade com sistemas de triagem (ATS)",
+  clareza: "melhorar clareza e narrativa da trajetória",
+  reduzir: "reduzir o tamanho do currículo, cortando repetições e conteúdo irrelevante",
+  transicao: "adaptar o currículo para uma transição de carreira, destacando experiências transferíveis",
+};
+
 const SYSTEM_PROMPT = `Você é um especialista brasileiro em recrutamento e seleção e em sistemas ATS (Applicant Tracking Systems).
-Sua tarefa é comparar SEMANTICAMENTE um currículo com a descrição de uma vaga e devolver uma análise estruturada, em português do Brasil.
+Sua tarefa é comparar SEMANTICAMENTE um currículo com a descrição de uma vaga e devolver uma análise estruturada. Os textos de análise ficam em português do Brasil.
 
 REGRAS OBRIGATÓRIAS:
 - Nunca invente experiências, formações, certificações, números, resultados ou habilidades que não estejam no currículo.
-- Nunca afirme que a pessoa "não possui" uma competência. Use "Esta competência não foi identificada no currículo." ou "Caso você realmente tenha essa experiência, considere incluí-la com um exemplo concreto.".
-- Reconheça sinônimos e termos relacionados (ex.: "Power BI" e "dashboards"; "atendimento ao cliente" e "suporte"; "gestão de pessoas" e "liderança de equipe"). Não marque algo como ausente apenas por diferença de escrita.
-- Nunca avalie nem mencione idade, gênero, raça, religião, saúde, estado civil, orientação sexual ou aparência. Avalie somente informações profissionais.
+- Nunca afirme que a pessoa "não possui" uma competência. Use "Esta competência não foi identificada no currículo." ou "Caso você realmente possua essa experiência, inclua onde a utilizou e qual resultado obteve.".
+- Reconheça sinônimos e termos relacionados (ex.: "Power BI" e "dashboards"; "atendimento ao cliente" e "suporte"; "gestão de pessoas" e "liderança de equipe"). Não marque algo como ausente apenas por diferença de escrita. Não faça simples contagem de palavras.
+- Nunca avalie nem mencione idade, gênero, raça, religião, saúde, estado civil, orientação sexual ou aparência.
 - Não oriente o uso artificial ou repetitivo de palavras-chave.
 - Ignore palavras genéricas, artigos, preposições, o nome da empresa e termos sem valor profissional nas listas de palavras-chave.
-- Quando faltar informação, escreva orientações condicionais ("Se você possui experiência com X, inclua onde utilizou e qual resultado obteve.").
+- Quando faltar informação, escreva orientações condicionais ("Caso você realmente possua experiência com X, inclua onde utilizou e qual resultado obteve.").
 - Seja consistente: o mesmo currículo com a mesma vaga deve receber pontuação praticamente igual.
 
 CÁLCULO DA PONTUAÇÃO (0 a 100), nota de cada critério de 0 a 100 e média ponderada:
@@ -38,93 +60,72 @@ Responda SOMENTE com um JSON válido, sem comentários e sem cercas de código, 
   "sugestoes": [{"titulo":"...","prioridade":"alta|media|opcional","acao":"o que fazer, de forma específica"}],
   "reescritas": [{"alvo":"resumo|objetivo|experiencia|projeto","alvoId":"id informado no currículo quando existir","alvoRotulo":"nome do trecho","textoSugerido":"versão melhor usando apenas informações já presentes","podeAplicar":true,"observacao":"o que a pessoa precisa confirmar antes de aplicar"}]
 }
-Use "podeAplicar": false sempre que a sugestão depender de informação que a pessoa ainda precisa fornecer ou confirmar.`;
+Os textos do campo "textoSugerido" devem estar no idioma pedido pelo usuário. Use "podeAplicar": false sempre que a sugestão depender de informação que a pessoa ainda precisa fornecer ou confirmar.`;
 
-function extrairJson(conteudo: string): unknown {
-  const limpo = conteudo
-    .replace(/^\s*```(?:json)?/i, "")
-    .replace(/```\s*$/i, "")
-    .trim();
-  try {
-    return JSON.parse(limpo);
-  } catch {
-    const inicio = limpo.indexOf("{");
-    const fim = limpo.lastIndexOf("}");
-    if (inicio >= 0 && fim > inicio) return JSON.parse(limpo.slice(inicio, fim + 1));
-    throw new Error("resposta-invalida");
-  }
+export interface AnalyzeInput {
+  resume?: unknown;
+  pastedText?: string;
+  jobTitle: string;
+  company: string;
+  jobDescription: string;
+  preferences?: unknown;
 }
 
 export const analyzeResumeForJob = createServerFn({ method: "POST" })
-  .inputValidator((input: { resume: unknown; jobTitle: string; company: string; jobDescription: string }) => {
+  .inputValidator((input: AnalyzeInput) => {
     const jobTitle = (input.jobTitle ?? "").toString().trim();
     const company = (input.company ?? "").toString().trim();
     const jobDescription = (input.jobDescription ?? "").toString().trim();
+    const pastedText = (input.pastedText ?? "").toString().trim();
     if (jobTitle.length < 2) throw new Error("cargo-invalido");
     if (jobDescription.length < MIN_JOB_DESCRIPTION) throw new Error("descricao-curta");
+
+    let curriculo = "";
+    if (pastedText) {
+      if (!hasUsablePastedResume(pastedText)) throw new Error("curriculo-insuficiente");
+      curriculo = pastedText.slice(0, 20000);
+    } else {
+      const resume = normalizeResume(input.resume);
+      if (!hasUsableResume(resume)) throw new Error("curriculo-insuficiente");
+      curriculo = resumeToPlainText(resume).slice(0, 20000);
+    }
+
     return {
-      resume: input.resume,
+      curriculo,
       jobTitle: jobTitle.slice(0, 200),
       company: company.slice(0, 200),
       jobDescription: jobDescription.slice(0, 12000),
+      preferences: normalizePreferences(input.preferences),
     };
   })
   .handler(async ({ data }): Promise<AnalysisResult> => {
-    const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) throw new Error("ia-indisponivel");
-
-    const curriculo = resumeToPlainText(normalizeResume(data.resume));
+    const { callAI, extractJson } = await import("./ai.server");
+    const p = data.preferences;
 
     const userPrompt = `VAGA
 Cargo: ${data.jobTitle}
 Empresa: ${data.company || "não informada"}
+Nível da vaga informado pela pessoa: ${p.level === "nao_informado" ? "não informado" : p.level}
 Descrição completa da vaga:
 """
 ${data.jobDescription}
 """
 
+PREFERÊNCIAS DA PESSOA
+- Idioma dos textos sugeridos: ${IDIOMA[p.language]}
+- Tom profissional desejado: ${TOM[p.tone]}
+- Objetivo principal: ${OBJETIVO[p.goal]}
+
 CURRÍCULO DO CANDIDATO
 """
-${curriculo}
+${data.curriculo}
 """
 
 Compare o currículo com a vaga e devolva apenas o JSON no formato pedido.`;
 
-    let resposta: Response;
+    const conteudo = await callAI(SYSTEM_PROMPT, userPrompt);
     try {
-      resposta = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          temperature: 0.1,
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: userPrompt },
-          ],
-        }),
-      });
-    } catch {
-      throw new Error("falha-conexao");
-    }
-
-    if (resposta.status === 429) throw new Error("limite-uso");
-    if (!resposta.ok) {
-      console.error("Falha na análise ATS", resposta.status, await resposta.text().catch(() => ""));
-      throw new Error("falha-analise");
-    }
-
-    const json = (await resposta.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const conteudo = json.choices?.[0]?.message?.content ?? "";
-    if (!conteudo.trim()) throw new Error("falha-analise");
-
-    try {
-      return normalizeAnalysis(extrairJson(conteudo));
+      return normalizeAnalysis(extractJson(conteudo));
     } catch {
       throw new Error("falha-analise");
     }

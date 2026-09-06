@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 
+import { normalizePreferences, type AnalysisPreferences, type ResumeSource } from "./preferences";
 import { normalizeAnalysis, type AnalysisResult, type JobInput } from "./types";
 
 export interface AnalysisRow {
@@ -12,6 +13,10 @@ export interface AnalysisRow {
   job_description: string;
   overall_score: number;
   analysis_result: unknown;
+  source_kind: string;
+  pasted_resume: string;
+  preferences: unknown;
+  adapted_resume_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -29,6 +34,10 @@ export async function saveAnalysis(input: {
   resumeId: string | null;
   job: JobInput;
   result: AnalysisResult;
+  source: ResumeSource;
+  pastedText?: string;
+  preferences: AnalysisPreferences;
+  adaptedResumeId?: string | null;
 }): Promise<AnalysisRow> {
   const { data, error } = await supabase
     .from("resume_analyses")
@@ -40,6 +49,10 @@ export async function saveAnalysis(input: {
       job_description: input.job.jobDescription,
       overall_score: input.result.overallScore,
       analysis_result: JSON.parse(JSON.stringify(input.result)) as Json,
+      source_kind: input.source,
+      pasted_resume: input.source === "colado" ? (input.pastedText ?? "").slice(0, 20000) : "",
+      preferences: JSON.parse(JSON.stringify(input.preferences)) as Json,
+      adapted_resume_id: input.adaptedResumeId ?? null,
     })
     .select("*")
     .single();
@@ -52,7 +65,11 @@ export async function deleteAnalysis(id: string) {
   if (error) throw error;
 }
 
-export function rowToAnalysis(row: AnalysisRow): { job: JobInput; result: AnalysisResult } {
+export function rowToAnalysis(row: AnalysisRow): {
+  job: JobInput;
+  result: AnalysisResult;
+  preferences: AnalysisPreferences;
+} {
   return {
     job: {
       jobTitle: row.job_title,
@@ -60,5 +77,6 @@ export function rowToAnalysis(row: AnalysisRow): { job: JobInput; result: Analys
       jobDescription: row.job_description,
     },
     result: normalizeAnalysis(row.analysis_result),
+    preferences: normalizePreferences(row.preferences),
   };
 }

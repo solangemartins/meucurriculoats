@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getResume, rowToResume } from "@/lib/resume/api";
+import { listAnalyses } from "@/lib/analysis/api";
 
 export const Route = createFileRoute("/_authenticated/editar-curriculo/$id")({
   head: () => ({
@@ -26,6 +27,23 @@ function EditarCurriculo() {
     queryKey: ["curriculo", id],
     queryFn: () => getResume(id),
   });
+
+  const { data: analises } = useQuery({
+    queryKey: ["analises", id],
+    queryFn: () => listAnalyses(id),
+  });
+
+  const adapted =
+    data && data.kind === "adaptada"
+      ? {
+          jobTitle: data.job_title,
+          company: data.job_company,
+          jobDescription: data.job_description,
+          parentResumeId: data.parent_resume_id,
+          lastScore: analises?.[0]?.overall_score ?? null,
+          preferences: data.preferences,
+        }
+      : null;
 
   return (
     <PageShell wide showFooter={false}>
@@ -50,7 +68,12 @@ function EditarCurriculo() {
           </AlertDescription>
         </Alert>
       ) : (
-        <ResumeEditor initialData={rowToResume(data)} resumeId={data.id} keepLocalDraft={false} />
+        <ResumeEditor
+          initialData={rowToResume(data)}
+          resumeId={data.id}
+          keepLocalDraft={false}
+          adapted={adapted}
+        />
       )}
     </PageShell>
   );

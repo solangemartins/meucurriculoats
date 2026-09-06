@@ -3,8 +3,9 @@ import { CloudOff, Download, Eye, FileDown, Loader2, PencilLine, Save, ScanSearc
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
-import { JobAnalysisDialog } from "@/components/analysis/JobAnalysisDialog";
-import type { AnalysisRewrite } from "@/lib/analysis/types";
+import { AnalysisWizard } from "@/components/analysis/AnalysisWizard";
+import { normalizePreferences } from "@/lib/analysis/preferences";
+import type { AnalysisRewrite, JobInput } from "@/lib/analysis/types";
 import { AuthDialog } from "@/components/auth/AuthDialog";
 
 import {
@@ -43,7 +44,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/lib/auth-context";
-import { createResume, updateResume } from "@/lib/resume/api";
+import { createAdaptedResume, createResume, updateResume } from "@/lib/resume/api";
 import {
   clearDraft,
   getPendingAction,
@@ -70,15 +71,27 @@ const SECTIONS = [
   { id: "adicionais", label: "Informações adicionais" },
 ] as const;
 
+export interface AdaptedInfo {
+  jobTitle: string;
+  company: string;
+  jobDescription: string;
+  parentResumeId: string | null;
+  lastScore: number | null;
+  preferences?: unknown;
+}
+
 export function ResumeEditor({
   initialData,
   resumeId: initialResumeId,
   keepLocalDraft,
+  adapted,
 }: {
   initialData: ResumeData;
   resumeId: string | null;
   /** Rascunho do visitante (ou currículo iniciado sem conta) fica salvo no navegador. */
   keepLocalDraft: boolean;
+  /** Preenchido quando este currículo é uma versão feita para uma vaga específica. */
+  adapted?: AdaptedInfo | null;
 }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -150,7 +163,15 @@ export function ResumeEditor({
         if (resumeId) {
           await updateResume(resumeId, payload);
         } else {
-          const row = await createResume(payload, user.id);
+          const row = adapted
+            ? await createAdaptedResume(payload, user.id, {
+                parentResumeId: adapted.parentResumeId,
+                jobTitle: adapted.jobTitle,
+                company: adapted.company,
+                jobDescription: adapted.jobDescription,
+                preferences: normalizePreferences(adapted.preferences),
+              })
+            : await createResume(payload, user.id);
           setResumeId(row.id);
           setDraftResumeId(row.id);
           window.history.replaceState(null, "", `/editar-curriculo/${row.id}`);
@@ -165,7 +186,7 @@ export function ResumeEditor({
         throw new Error("falha-ao-salvar");
       }
     },
-    [resumeId, user],
+    [adapted, resumeId, user],
   );
 
   // Salvamento automático com debounce quando já existe registro na conta
@@ -254,6 +275,14 @@ export function ResumeEditor({
     erro: "Não foi possível salvar",
   };
 
+  const jobDaVaga: JobInput | null = adapted
+    ? {
+        jobTitle: adapted.jobTitle,
+        company: adapted.company,
+        jobDescription: adapted.jobDescription,
+      }
+    : null;
+
   const formulario = (
     <div className="space-y-5">
       <div className="card-elevated space-y-4 p-4">
@@ -341,6 +370,30 @@ export function ResumeEditor({
         </div>
       </div>
 
+      {adapted ? (
+        <Alert>
+          <AlertTitle>Versão adaptada para uma vaga</AlertTitle>
+          <AlertDescription>
+            Esta é uma versão adaptada para a vaga de {adapted.jobTitle}
+            {adapted.company ? ` na ${adapted.company}` : ""}. Seu currículo original permanece inalterado.
+            {adapted.parentResumeId ? (
+              <Button
+                variant="link"
+                className="h-auto p-0 pl-1"
+                onClick={() =>
+                  navigate({
+                    to: "/editar-curriculo/$id",
+                    params: { id: adapted.parentResumeId as string },
+                  })
+                }
+              >
+                Abrir o currículo original
+              </Button>
+            ) : null}
+          </AlertDescription>
+        </Alert>
+      ) : null}
+
       {erroConexao ? (
         <Alert variant="destructive">
           <AlertTitle>Não foi possível salvar agora</AlertTitle>
@@ -408,11 +461,13 @@ export function ResumeEditor({
         ) : null}
       </div>
 
-      <JobAnalysisDialog
+      <AnalysisWizard
         open={analiseAberta}
         onOpenChange={setAnaliseAberta}
-        data={data}
+        resumeData={data}
         resumeId={resumeId}
+        initialJob={jobDaVaga}
+        previousScore={adapted?.lastScore ?? null}
         onApplyRewrite={aplicarReescrita}
       />
 
