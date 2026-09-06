@@ -177,7 +177,7 @@ export function AnalysisResultPanel({
               </p>
             ) : (
               result.palavrasChaveEncontradas.map((k) => (
-                <Badge key={k} variant="secondary">
+                <Badge key={`enc-${k}-${i}`} variant="secondary">
                   {k}
                 </Badge>
               ))
@@ -200,7 +200,7 @@ export function AnalysisResultPanel({
                 </p>
               ) : (
                 result.palavrasChaveAusentes.map((k) => (
-                  <Badge key={k} variant="outline">
+                  <Badge key={`aus-${k}-${i}`} variant="outline">
                     {k}
                   </Badge>
                 ))
