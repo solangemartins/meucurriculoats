@@ -58,3 +58,42 @@ export function getDraftResumeId(): string | null {
   if (!canUseStorage()) return null;
   return window.localStorage.getItem(RESUME_ID_KEY);
 }
+
+/* ---------- Versão adaptada guardada neste dispositivo ---------- */
+
+const ADAPTED_KEY = "curriculo-ats:versao-adaptada";
+
+export interface DraftAdaptedMeta {
+  jobTitle: string;
+  company: string;
+  jobDescription: string;
+  parentResumeId: string | null;
+  lastScore: number | null;
+  preferences: unknown;
+}
+
+export function setDraftAdaptedMeta(meta: DraftAdaptedMeta | null) {
+  if (!canUseStorage()) return;
+  if (meta) window.localStorage.setItem(ADAPTED_KEY, JSON.stringify(meta));
+  else window.localStorage.removeItem(ADAPTED_KEY);
+}
+
+export function getDraftAdaptedMeta(): DraftAdaptedMeta | null {
+  if (!canUseStorage()) return null;
+  try {
+    const raw = window.localStorage.getItem(ADAPTED_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<DraftAdaptedMeta>;
+    if (!parsed.jobTitle) return null;
+    return {
+      jobTitle: parsed.jobTitle,
+      company: parsed.company ?? "",
+      jobDescription: parsed.jobDescription ?? "",
+      parentResumeId: parsed.parentResumeId ?? null,
+      lastScore: typeof parsed.lastScore === "number" ? parsed.lastScore : null,
+      preferences: parsed.preferences ?? {},
+    };
+  } catch {
+    return null;
+  }
+}

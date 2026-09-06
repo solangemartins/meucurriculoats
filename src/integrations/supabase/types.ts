@@ -43,6 +43,7 @@ export type Database = {
       }
       resume_analyses: {
         Row: {
+          adapted_resume_id: string | null
           analysis_result: Json
           company: string
           created_at: string
@@ -50,11 +51,15 @@ export type Database = {
           job_description: string
           job_title: string
           overall_score: number
+          pasted_resume: string
+          preferences: Json
           resume_id: string | null
+          source_kind: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          adapted_resume_id?: string | null
           analysis_result?: Json
           company?: string
           created_at?: string
@@ -62,11 +67,15 @@ export type Database = {
           job_description?: string
           job_title?: string
           overall_score?: number
+          pasted_resume?: string
+          preferences?: Json
           resume_id?: string | null
+          source_kind?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          adapted_resume_id?: string | null
           analysis_result?: Json
           company?: string
           created_at?: string
@@ -74,11 +83,21 @@ export type Database = {
           job_description?: string
           job_title?: string
           overall_score?: number
+          pasted_resume?: string
+          preferences?: Json
           resume_id?: string | null
+          source_kind?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "resume_analyses_adapted_resume_id_fkey"
+            columns: ["adapted_resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "resume_analyses_resume_id_fkey"
             columns: ["resume_id"]
@@ -92,6 +111,12 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          job_company: string
+          job_description: string
+          job_title: string
+          kind: string
+          parent_resume_id: string | null
+          preferences: Json
           resume_data: Json
           target_role: string
           template: string
@@ -102,6 +127,12 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          job_company?: string
+          job_description?: string
+          job_title?: string
+          kind?: string
+          parent_resume_id?: string | null
+          preferences?: Json
           resume_data?: Json
           target_role?: string
           template?: string
@@ -112,6 +143,12 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          job_company?: string
+          job_description?: string
+          job_title?: string
+          kind?: string
+          parent_resume_id?: string | null
+          preferences?: Json
           resume_data?: Json
           target_role?: string
           template?: string
@@ -119,7 +156,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "resumes_parent_resume_id_fkey"
+            columns: ["parent_resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

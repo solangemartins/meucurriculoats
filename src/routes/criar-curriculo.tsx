@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getDraftResumeId, loadDraft } from "@/lib/resume/draft";
+import { getDraftAdaptedMeta, getDraftResumeId, loadDraft, type DraftAdaptedMeta } from "@/lib/resume/draft";
 import { emptyResume, type ResumeData } from "@/lib/resume/types";
 
 export const Route = createFileRoute("/criar-curriculo")({
@@ -27,17 +27,30 @@ export const Route = createFileRoute("/criar-curriculo")({
 });
 
 function CriarCurriculo() {
-  const [estado, setEstado] = useState<{ data: ResumeData; resumeId: string | null } | null>(null);
+  const [estado, setEstado] = useState<{
+    data: ResumeData;
+    resumeId: string | null;
+    adapted: DraftAdaptedMeta | null;
+  } | null>(null);
 
   useEffect(() => {
     const rascunho = loadDraft();
-    setEstado({ data: rascunho ?? emptyResume(), resumeId: getDraftResumeId() });
+    setEstado({
+      data: rascunho ?? emptyResume(),
+      resumeId: getDraftResumeId(),
+      adapted: getDraftAdaptedMeta(),
+    });
   }, []);
 
   return (
     <PageShell wide showFooter={false}>
       {estado ? (
-        <ResumeEditor initialData={estado.data} resumeId={estado.resumeId} keepLocalDraft />
+        <ResumeEditor
+          initialData={estado.data}
+          resumeId={estado.resumeId}
+          keepLocalDraft
+          adapted={estado.adapted}
+        />
       ) : (
         <div className="space-y-4">
           <Skeleton className="h-20 w-full rounded-xl" />
