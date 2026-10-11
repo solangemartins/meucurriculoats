@@ -45,7 +45,7 @@ const BENEFICIOS = [
   {
     icon: ListChecks,
     titulo: "Estrutura compatível com ATS",
-    texto: "Uma coluna, títulos padronizados e texto real: o formato que os sistemas leem sem erro.",
+    texto: "Uma coluna, títulos padronizados e texto real: modelo otimizado para sistemas de rastreamento de candidatos.",
   },
   {
     icon: PencilLine,
