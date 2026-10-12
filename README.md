@@ -108,15 +108,16 @@ Durante o desenvolvimento foram implementados diversos ajustes:
 
 **Página Inicial**
 
-landinbg-page.png
+landing page
+
 
 **Editor de Currículo**
 
-Adicione aqui a imagem do editor de currículo.
+![Gerador Curriculo](gerador-curriculo.png)
 
 **Análise ATS**
 
-Adicione aqui a imagem da análise de compatibilidade.
+analise-curriculo-ats.png
 
 **Demonstração**
 
