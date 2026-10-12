@@ -108,7 +108,7 @@ Durante o desenvolvimento foram implementados diversos ajustes:
 
 **Página Inicial**
 
-landing page
+![Landing Page](landing-page.png)
 
 
 **Editor de Currículo**
@@ -117,7 +117,7 @@ landing page
 
 **Análise ATS**
 
-analise-curriculo-ats.png
+![Analise Curriculo](analise-curriculo-ats.png)
 
 **Demonstração**
 
