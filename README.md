@@ -107,7 +107,8 @@ Durante o desenvolvimento foram implementados diversos ajustes:
 **Screenshots**
 
 **Página Inicial**
-Adicione aqui a imagem da landing page.
+
+landinbg-page.png
 
 **Editor de Currículo**
 
